@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  margin: 0 auto 2rem auto;
+  border-collapse: collapse;
+}
+
+.board th,
+.row-header-cell {
+  font-weight: bold;
+  color: #6b6b6b;
+}
+
+.board th {
+  padding: 0.2rem 0;
+}
+
+.row-header-cell {
+  text-align: center;
+}
+
+.board th,
+.board td {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #464646;
+}
+
+.footer-data {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
+
+.footer-data:first-of-type {
+  padding-left: 1rem;
+}
+
+.footer-data:last-of-type {
+  text-align: center;
+  font-weight: bold;
+  color: #ff9900;
+}

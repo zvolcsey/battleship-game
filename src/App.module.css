@@ -1,0 +1,17 @@
+.main {
+  padding-top: 2rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 3rem;
+}
+
+@media (max-width: 50rem) {
+  .container {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}

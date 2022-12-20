@@ -1,0 +1,12 @@
+.container {
+  text-align: center;
+}
+
+.turn {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.turn-messages {
+  font-style: italic;
+}

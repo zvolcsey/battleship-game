@@ -1,0 +1,13 @@
+.btn {
+  margin-right: 1rem;
+}
+
+.btn:last-of-type {
+  margin: 0;
+}
+
+@media (max-width: 50rem) {
+  .container {
+    margin: 0 auto 2rem auto;
+  }
+}

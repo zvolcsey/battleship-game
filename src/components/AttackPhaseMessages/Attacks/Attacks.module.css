@@ -1,0 +1,8 @@
+.attacks-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.attacks-container p span {
+  font-weight: bold;
+}
