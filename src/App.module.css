@@ -9,6 +9,14 @@
   gap: 3rem;
 }
 
+.container:first-child {
+  justify-self: end;
+}
+
+.container:last-child {
+  justify-self: start;
+}
+
 @media (max-width: 50rem) {
   .container {
     flex-direction: column;

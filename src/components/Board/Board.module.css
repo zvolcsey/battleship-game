@@ -1,11 +1,19 @@
 .container {
   display: flex;
   flex-direction: column;
+  width: 22rem;
 }
 
 .board {
-  margin: 0 auto 2rem auto;
   border-collapse: collapse;
+}
+
+.board:first-child {
+  justify-self: end;
+}
+
+.board:last-child {
+  justify-self: start;
 }
 
 .board th,
@@ -41,5 +49,4 @@
 .footer-data:last-of-type {
   text-align: center;
   font-weight: bold;
-  color: #ff9900;
 }
