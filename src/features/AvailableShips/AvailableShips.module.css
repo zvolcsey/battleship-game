@@ -1,0 +1,33 @@
+.container {
+  margin-bottom: 1rem;
+}
+
+.container p {
+  font-style: italic;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  position: relative;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+
+.icon {
+  position: absolute;
+  right: 1rem;
+  transition: all 300ms ease-in-out;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.remaining-ships {
+  display: flex;
+  align-items: center;
+}
+
+.remaining-ships span {
+  padding-left: 1rem;
+}

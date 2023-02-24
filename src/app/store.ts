@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
-import GameSlice from '../features/Game/GameSlice';
+import gameSlice from '../features/Game/GameSlice';
+import availableShipsSlice from '../features/AvailableShips/AvailableShipsSlice';
 
 export const store = configureStore({
   reducer: {
-    game: GameSlice,
+    game: gameSlice,
+    availableShips: availableShipsSlice,
   },
 });
 

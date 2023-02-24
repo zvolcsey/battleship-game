@@ -1,0 +1,6 @@
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 0 0.8rem 0.8rem;
+}

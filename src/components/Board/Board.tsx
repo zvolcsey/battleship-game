@@ -10,6 +10,7 @@ import SetupAction from './SetupAction/SetupActions';
 import styles from './Board.module.css';
 
 import type { BoardType } from '../../app/types';
+import AvailableShips from '../../features/AvailableShips/AvailableShips';
 
 const Board: FC<{
   name: 'Your Board' | "Computer's Board";
@@ -72,9 +73,8 @@ const Board: FC<{
           </tbody>
           {tableFooter}
         </table>
-        {phase === 'Setup' && name === 'Your Board' && (
-          <SetupAction />
-        )}
+        {phase === 'Setup' && name === 'Your Board' && <AvailableShips />}
+        {phase === 'Setup' && name === 'Your Board' && <SetupAction />}
       </div>
     );
   } else {

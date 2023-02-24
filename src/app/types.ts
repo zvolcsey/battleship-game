@@ -17,3 +17,13 @@ export interface GameState {
   yourAttacks: string[];
   opponentsAttacks: string[];
 }
+
+export interface IAvailableShips {
+  availableShips: IShips[];
+  totalAvailableShips: number;
+}
+
+export interface IShips {
+  type: string;
+  resourceId: string;
+}

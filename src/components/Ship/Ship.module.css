@@ -1,0 +1,29 @@
+.ship {
+  display: flex;
+  align-items: center;
+  height: 1.2rem;
+  cursor: pointer;
+  background: #8b8b8b;
+  border: 0.1rem solid #000;
+  border-radius: 0.6rem;
+}
+
+.patrol-boat {
+  width: 3.8rem;
+}
+
+.submarine {
+  width: 5.8rem;
+}
+
+.destroyer {
+  width: 5.8rem;
+}
+
+.battleship {
+  width: 7.8rem;
+}
+
+.carrier {
+  width: 9.8rem;
+}
