@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import styles from './AvailableShipsList.module.css';
 import AvailableShip from './AvailableShip';
-import type { IShips } from '../../app/types';
+import type { IShip } from '../../app/types';
 
-export const AvailableShipsList: FC<{ ships: IShips[] }> = (props) => {
+export const AvailableShipsList: FC<{ ships: IShip[] }> = (props) => {
   const { ships } = props;
 
-  const availableShips = ships.map(({ type, resourceId }) => (
-    <AvailableShip key={resourceId} type={type} />
+  const availableShips = ships.map((ship) => (
+    <AvailableShip key={ship.resourceId} shipData={ship} />
   ));
 
   return <ul className={styles.list}>{availableShips}</ul>;

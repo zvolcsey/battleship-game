@@ -18,12 +18,23 @@ export interface GameState {
   opponentsAttacks: string[];
 }
 
-export interface IAvailableShips {
-  availableShips: IShips[];
+export type DragStatus = 'idle' | 'start' | 'end';
+
+export interface IAvailableShipsState {
+  availableShips: IShip[];
   totalAvailableShips: number;
+  dragStatus: DragStatus;
+  selectedShip: IShip | null;
 }
 
-export interface IShips {
+export interface IShip {
   type: string;
   resourceId: string;
+  size: number;
+}
+
+export interface IAddShip {
+  coordinates: Coordinates;
+  type: string;
+  shipSize: number;
 }

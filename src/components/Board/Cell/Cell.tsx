@@ -1,9 +1,8 @@
-import { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import {
   attack,
-  selectAvailableShips,
   selectPhase,
   selectTurn,
   selectYourBoard,
@@ -11,27 +10,51 @@ import {
 } from '../../../features/Game/GameSlice';
 import { addShipToBoard } from '../../../features/Game/GameSlice';
 import styles from './Cell.module.css';
+import {
+  addShip,
+  changeDragStatus,
+  decreaseShipsCount,
+  increaseShipsCount,
+  removeShip,
+  selectDragStatus,
+  selectSelectedShip,
+} from '../../../features/AvailableShips/AvailableShipsSlice';
+import {
+  checkOverflowFromBoard,
+  checkShipsOverlap,
+} from '../../../utils/utils';
 
 const Cell: FC<{
-  board: 'Your Board' | "Computer's Board";
+  boardName: 'Your Board' | "Computer's Board";
   data: number | string;
   x: number;
   y: number;
 }> = (props) => {
-  const { board, data, x, y } = props;
+  const { boardName, data, x, y } = props;
 
   const phase = useSelector(selectPhase);
-  const availableShips = useSelector(selectAvailableShips);
   const turn = useSelector(selectTurn);
   const yourBoard = useSelector(selectYourBoard);
+  const dragStatus = useAppSelector(selectDragStatus);
+  const selectedShip = useAppSelector(selectSelectedShip);
+
+  const [status, setStatus] = useState<'idle' | 'selected'>('idle');
+  const [statusStyles, setStatusStyles] = useState<string>('');
+
+  useEffect(() => {
+    if (dragStatus === 'start' && boardName === 'Your Board') {
+      setStatus('idle');
+      setStatusStyles('');
+    }
+  }, [dragStatus]);
 
   const dispatch = useAppDispatch();
 
   let content: JSX.Element | null = null;
 
-  if (data === 1 && board === 'Your Board') {
+  if (data === 1 && boardName === 'Your Board') {
     content = <div className={styles.opponentsMissileAttack}></div>;
-  } else if (data === 'sink' && board === 'Your Board') {
+  } else if (data === 'sink' && boardName === 'Your Board') {
     content = (
       <div className={styles.sink}>
         <div className={styles.ship}>
@@ -39,7 +62,7 @@ const Cell: FC<{
         </div>
       </div>
     );
-  } else if (data === 'sink' && board === "Computer's Board") {
+  } else if (data === 'sink' && boardName === "Computer's Board") {
     content = (
       <div className={styles.sink}>
         <div className={styles.ship}>
@@ -47,24 +70,55 @@ const Cell: FC<{
         </div>
       </div>
     );
-  } else if (typeof data === 'string' && board === 'Your Board') {
-    content = <div className={styles.ship}></div>;
+  } else if (typeof data === 'string' && boardName === 'Your Board') {
+    content = <div className={styles.ship}>{data}</div>;
   } else if (
     phase === 'End' &&
     typeof data === 'string' &&
-    board === "Computer's Board"
+    boardName === "Computer's Board"
   ) {
     content = <div className={styles.ship}></div>;
-  } else if (data === 1 && board === "Computer's Board") {
+  } else if (data === 1 && boardName === "Computer's Board") {
     content = <div className={styles.yourMissileAttack}></div>;
   }
 
-  const addShipToBoardHandler = () => {
-    if (availableShips > 0 && board === 'Your Board') {
-      dispatch(addShipToBoard({ x, y }));
+  const addShipToBoardHandler = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (boardName === 'Your Board' && selectedShip && yourBoard) {
+      const isOverlap = checkShipsOverlap(
+        { x, y },
+        yourBoard,
+        selectedShip.size
+      );
+      const isOverflow = checkOverflowFromBoard(
+        { x, y },
+        yourBoard,
+        selectedShip.size
+      );
+
+      if (!isOverlap && !isOverflow) {
+        dispatch(
+          addShipToBoard({
+            coordinates: { x, y },
+            type: selectedShip.type,
+            shipSize: selectedShip?.size!,
+          })
+        );
+        dispatch(decreaseShipsCount());
+        dispatch(removeShip(selectedShip?.resourceId!));
+        dispatch(changeDragStatus('end'));
+        setStatus('idle');
+        setStatusStyles('');
+      }
     }
-    if (yourBoard && yourBoard[y][x] === 'S1') {
+  };
+
+  const removeShipFromBoard = () => {
+    if (boardName === 'Your Board' && !selectedShip && yourBoard) {
       dispatch(withdrawal({ x, y }));
+      dispatch(increaseShipsCount());
+      dispatch(addShip(yourBoard));
     }
   };
 
@@ -74,10 +128,28 @@ const Cell: FC<{
     }
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setStatus('selected');
+    setStatusStyles(styles.selected);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setStatus('idle');
+    setStatusStyles('');
+  };
+
   return (
     <td
-      className={`${styles.cell} ${styles.water}`}
-      onClick={board === 'Your Board' ? addShipToBoardHandler : attackHandler}
+      className={`${styles.cell} ${styles.water} ${statusStyles}`}
+      onClick={removeShipFromBoard}
+      onDragEnter={(e) => console.log('onDragEnter')}
+      onDragLeave={(e) => handleDragLeave(e)}
+      onDragOver={(e) => handleDragOver(e)}
+      onDrop={(e) => addShipToBoardHandler(e)}
     >
       {content}
     </td>

@@ -3,7 +3,7 @@ import { AVAILABLE_SHIPS, BOARD_SIZE, ALPHABETS } from '../../app/constants';
 import { RootState } from '../../app/store';
 import { getRandomIntCoordinate } from '../../utils/utils';
 
-import type { GameState, Coordinates } from '../../app/types';
+import type { GameState, Coordinates, IAddShip } from '../../app/types';
 
 const initialState: GameState = {
   phase: 'Setup',
@@ -31,12 +31,21 @@ export const gameSlice = createSlice({
     addOpponentsBoard(state, action) {
       state.opponentsBoard = action.payload;
     },
-    addShipToBoard(state, action: PayloadAction<Coordinates>) {
+    addShipToBoard(state, action: PayloadAction<IAddShip>) {
+      const { coordinates, type, shipSize } = action.payload;
       if (
         state.yourBoard &&
-        state.yourBoard[action.payload.y][action.payload.x] !== 'S1'
+        typeof state.yourBoard[coordinates.y][coordinates.x] !== 'string'
       ) {
-        state.yourBoard[action.payload.y][action.payload.x] = 'S1';
+        for (let i = 0; i < shipSize; i++) {
+          if (i === 0) {
+            state.yourBoard[coordinates.y][coordinates.x + i] = `S${shipSize}F`;
+          } else if (i === shipSize - 1) {
+            state.yourBoard[coordinates.y][coordinates.x + i] = `S${shipSize}B`;
+          } else {
+            state.yourBoard[coordinates.y][coordinates.x + i] = `S${shipSize}`;
+          }
+        }
         state.availableShips--;
       }
     },

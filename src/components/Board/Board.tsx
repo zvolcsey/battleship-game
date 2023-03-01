@@ -2,10 +2,7 @@ import { FC } from 'react';
 import { ALPHABETS, BOARD_SIZE, COLUMNS } from '../../app/constants';
 import Cell from './Cell/Cell';
 import { useSelector } from 'react-redux';
-import {
-  selectAvailableShips,
-  selectPhase,
-} from '../../features/Game/GameSlice';
+import { selectPhase } from '../../features/Game/GameSlice';
 import SetupAction from './SetupAction/SetupActions';
 import styles from './Board.module.css';
 
@@ -19,23 +16,6 @@ const Board: FC<{
   const { name, board } = props;
 
   const phase = useSelector(selectPhase);
-  const availableShips = useSelector(selectAvailableShips);
-
-  let tableFooter = null;
-  if (phase === 'Setup' && name === 'Your Board') {
-    tableFooter = (
-      <tfoot>
-        <tr>
-          <td className={styles['footer-data']} colSpan={BOARD_SIZE / 2 + 1}>
-            Ships in the dock:
-          </td>
-          <td className={styles['footer-data']} colSpan={BOARD_SIZE / 2}>
-            {availableShips}
-          </td>
-        </tr>
-      </tfoot>
-    );
-  }
 
   if (board) {
     return (
@@ -62,7 +42,7 @@ const Board: FC<{
                 {row.map((data, idx) => (
                   <Cell
                     key={idx}
-                    board={name}
+                    boardName={name}
                     data={data}
                     x={idx}
                     y={board.indexOf(row)}
@@ -71,7 +51,6 @@ const Board: FC<{
               </tr>
             ))}
           </tbody>
-          {tableFooter}
         </table>
         {phase === 'Setup' && name === 'Your Board' && <AvailableShips />}
         {phase === 'Setup' && name === 'Your Board' && <SetupAction />}

@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { Button } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectAvailableShips,
   changePhase,
   addRandomYourShips,
 } from '../../../features/Game/GameSlice';
+import { selectAvailableShips } from '../../../features/AvailableShips/AvailableShipsSlice';
 import styles from './SetupAction.module.css';
 
 const SetupAction: FC<{}> = () => {
@@ -18,7 +18,7 @@ const SetupAction: FC<{}> = () => {
   };
 
   const addRandomYourShipsHandler = () => {
-    if (availableShips > 0) {
+    if (availableShips.length > 0) {
       dispatch(addRandomYourShips());
     }
   };
@@ -29,7 +29,7 @@ const SetupAction: FC<{}> = () => {
         colorScheme="blue"
         className={styles.btn}
         onClick={goToAttackPhaseHandler}
-        disabled={availableShips > 0 ? true : false}
+        disabled={availableShips.length > 0 ? true : false}
       >
         Finish Setup
       </Button>
@@ -38,6 +38,7 @@ const SetupAction: FC<{}> = () => {
         className={styles.btn}
         variant="outline"
         onClick={addRandomYourShipsHandler}
+        disabled={true}
       >
         Random placement
       </Button>

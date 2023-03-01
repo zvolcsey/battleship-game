@@ -6,6 +6,7 @@
   background: #8b8b8b;
   border: 0.1rem solid #000;
   border-radius: 0.6rem;
+  z-index: 100;
 }
 
 .patrol-boat {
@@ -26,4 +27,9 @@
 
 .carrier {
   width: 9.8rem;
+}
+
+.size {
+  width: 100%;
+  text-align: center;
 }

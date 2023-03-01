@@ -1,4 +1,4 @@
-import type { Coordinates, BoardType } from '../app/types';
+import type { Coordinates, BoardType, IShip } from '../app/types';
 
 export const createBoard = (x: number, y: number): BoardType => {
   //https://www.pluralsight.com/guides/display-multidimensional-array-data-in-react
@@ -13,4 +13,29 @@ export const getRandomIntCoordinate = (max: number): Coordinates => {
   const y = Math.floor(Math.random() * (roundedMax + 1));
 
   return { x, y };
+};
+
+export const checkShipsOverlap = (
+  coordinates: Coordinates,
+  board: BoardType,
+  shipSize: number
+) => {
+  const { x, y } = coordinates;
+  for (let i = 0; i < shipSize; i++) {
+    if (typeof board[y][x + i] === 'string') {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const checkOverflowFromBoard = (
+  { x, y }: Coordinates,
+  board: BoardType,
+  shipSize: number
+) => {
+  if (x + shipSize > board[0].length) {
+    return true;
+  }
+  return false;
 };
